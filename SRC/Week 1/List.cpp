@@ -2,8 +2,8 @@
 using namespace std;
 
 struct List {
-    int arr[1000]; // bạn có thể tăng giảm tuỳ ý
-    int size = 0;     // số phần tử hiện có
+    int arr[1000];
+    int size = 0;     
 
     // Truy cập phần tử
     int accessAt(int pos) {

@@ -1,113 +1,149 @@
 ﻿#include <iostream>
 using namespace std;
-struct List {
-    int size;
-    int a[100];
 
-    // Truy cập
-    int Search(int index) {
-        return a[index];
+struct Node {
+    int data;
+    Node* next;
+    Node(int x) : data(x), next(nullptr) {}
+};
+
+
+struct LinkedList {
+    Node* head = nullptr;
+    Node* tail = nullptr;
+    int n = 0;
+
+    // Truy cập phần tử tại vị trí pos
+    int accessAt(int pos) {
+        if (pos < 0 || pos >= n) {
+            cout << "Vi tri khong hop le!\n";
+            return -1;
+        }
+        Node* temp = head;
+        for (int i = 0; i < pos; i++) temp = temp->next;
+        return temp->data;
     }
 
     // Chèn vào đầu
-    void insertF(int data) {
-        size += 1;
-        for (int i = size - 1; i >= 0; i--) {
-            a[i + 1] = a[i];
+    void insertFirst(int x) {
+        Node* newNode = new Node(x);
+        if (!head) {
+            head = tail = newNode;
         }
-        a[0] = data;
+        else {
+            newNode->next = head;
+            head = newNode;
+        }
+        n++;
     }
 
     // Chèn vào cuối
-    void insertL(int data) {
-        size += 1;
-        a[size - 1] = data;
-    }
-
-    // Chèn vào vị trí i 
-    void insert(int data, int index) {
-        size += 1;
-        for (int i = size - 2; i >= index; i--) {
-            a[i + 1] = a[i];
+    void insertLast(int x) {
+        Node* newNode = new Node(x);
+        if (!head) {
+            head = tail = newNode;
         }
-        a[index] = data;
-    }
-
-    // Xóa đầu
-    void deleteF() {
-        for (int i = size - 1; i > 0; i--) {
-            a[i - 1] = a[i];
+        else {
+            tail->next = newNode;
+            tail = newNode;
         }
-        size--;
+        n++;
     }
 
-    // Xóa cuối
-    void deleteL() {
-        size--;
+    // Chèn tại vị trí pos
+    void insertAt(int pos, int x) {
+        if (pos < 0 || pos > n) return;
+        if (pos == 0) return insertFirst(x);
+        if (pos == n) return insertLast(x);
+
+        Node* newNode = new Node(x);
+        Node* temp = head;
+        for (int i = 0; i < pos - 1; i++) temp = temp->next;
+
+        newNode->next = temp->next;
+        temp->next = newNode;
+        n++;
     }
 
-    // Xóa vị trí i
-    void deletE(int index) {
-        for (int i = size - 1; i > index; i--) {
-            a[i - 1] = a[i];
+    // Xoá đầu
+    void deleteFirst() {
+        if (!head) return;
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+        n--;
+        if (!head) tail = nullptr; 
+    }
+
+    // Xoá cuối
+    void deleteLast() {
+        if (!head) return;
+        if (head == tail) { 
+            delete head;
+            head = tail = nullptr;
         }
-        size--;
+        else {
+            Node* temp = head;
+            while (temp->next != tail) temp = temp->next;
+            delete tail;
+            tail = temp;
+            tail->next = nullptr;
+        }
+        n--;
+    }
+
+    // Xoá tại vị trí pos
+    void deleteAt(int pos) {
+        if (pos < 0 || pos >= n) return;
+        if (pos == 0) return deleteFirst();
+        if (pos == n - 1) return deleteLast();
+
+        Node* temp = head;
+        for (int i = 0; i < pos - 1; i++) temp = temp->next;
+        Node* del = temp->next;
+        temp->next = del->next;
+        delete del;
+        n--;
     }
 
     // Duyệt xuôi
-    void printF() {
-        for (int i = 0; i <= size - 1; i++) {
-            cout << a[i] << " ";
+    void printForward() {
+        cout << "Duyet xuoi: ";
+        Node* temp = head;
+        while (temp) {
+            cout << temp->data << " ";
+            temp = temp->next;
         }
+        cout << endl;
     }
 
-    // Duyệt nguọc
-    void printB() {
-        for (int i = size - 1; i >= 0; i--) {
-            cout << a[i] << " ";
-        }
+    // Duyệt ngược 
+    void printBackwardHelper(Node* node) {
+        if (!node) return;
+        printBackwardHelper(node->next);
+        cout << node->data << " ";
+    }
+    void printBackward() {
+        cout << "Duyet nguoc: ";
+        printBackwardHelper(head);
+        cout << endl;
     }
 };
+
 int main() {
-    List l;
-    l.size = 0;
-    l.insertF(7);
-    l.insertF(0);
-    l.insertF(5);
-    l.insertF(3);
-    l.insertF(1);
-    cout << "Duyet xuoi: ";
-    l.printF(); cout << endl;
-    cout << "Duyet nguoc: ";
-    l.printB(); cout << endl;
+    LinkedList lst;
 
-    l.insertL(9);
-    cout << "Duyet xuoi sau khi them 9 cuoi: ";
-    l.printF(); cout << endl;
+    lst.insertLast(1);
+    lst.insertLast(2);
+    lst.insertFirst(3);
+    lst.insertAt(1, 15);
 
-    l.insert(6, 2);
-    cout << "Duyet xuoi sau khi them 6 vao vi tri 2: ";
-    l.printF(); cout << endl;
+    lst.printForward();
+    lst.printBackward();
 
+    lst.deleteAt(1);
+    lst.deleteFirst();
+    lst.deleteLast();
 
-
-    l.deleteL();
-    l.deleteL();
-    cout << "Duyet xuoi sau khi xoa cuoi: ";
-    l.printF(); cout << endl;
-
-
-
-    l.deletE(2);
-    cout << "Duyet xuoi sau khi xoa tai vi tri 2: ";
-    l.printF(); cout << endl;
-
-    l.deleteF();
-    cout << "Duyet xuoi sau khi xoa dau: ";
-    l.printF(); cout << endl;
-
-
-    return 0;
-
-
+    lst.printForward();
 }

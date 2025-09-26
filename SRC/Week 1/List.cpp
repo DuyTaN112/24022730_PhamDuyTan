@@ -3,7 +3,7 @@ using namespace std;
 
 struct List {
     int arr[1000];
-    int size = 0;     
+    int size = 0;
 
     // Truy cập phần tử
     int accessAt(int pos) {
@@ -12,7 +12,7 @@ struct List {
 
     // Chèn vào đầu
     void insertFirst(int x) {
-        for (int i = n; i > 0; i--) {
+        for (int i = size; i > 0; i--) {
             arr[i] = arr[i - 1];
         }
         arr[0] = x;
@@ -22,12 +22,12 @@ struct List {
     // Chèn vào cuối
     void insertLast(int x) {
         arr[size] = x;
-        n++;
+        size++;
     }
 
     // Chèn vào vị trí pos
     void insertAt(int pos, int x) {
-        for (int i = n; i > pos; i--) {
+        for (int i = size; i > pos; i--) {
             arr[i] = arr[i - 1];
         }
         arr[pos] = x;
@@ -35,16 +35,16 @@ struct List {
     }
 
     // Xoá đầu
-    void deleteFirst() {;
+    void deleteFirst() {
         for (int i = 0; i < size - 1; i++) {
             arr[i] = arr[i + 1];
         }
-        n--;
+        size--;
     }
 
     // Xoá cuối
     void deleteLast() {
-        if (n == 0) return;
+        if (size == 0) return;
         size--;
     }
 
@@ -82,12 +82,12 @@ int main() {
     lst.insertFirst(5);
     lst.insertAt(1, 15);
 
-    lst.printForward();   
-    lst.printBackward();  
+    lst.printForward();
+    lst.printBackward();
 
     lst.deleteAt(1);
     lst.deleteFirst();
     lst.deleteLast();
 
-    lst.printForward();   
+    lst.printForward();
 }

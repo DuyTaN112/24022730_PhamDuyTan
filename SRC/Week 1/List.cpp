@@ -80,14 +80,5 @@ int main() {
     lst.insertLast(10);
     lst.insertLast(20);
     lst.insertFirst(5);
-    lst.insertAt(1, 15);
-
-    lst.printForward();
-    lst.printBackward();
-
-    lst.deleteAt(1);
-    lst.deleteFirst();
-    lst.deleteLast();
-
     lst.printForward();
 }

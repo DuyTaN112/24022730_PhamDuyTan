@@ -24,7 +24,7 @@ void nhap() {
 void prim(int u) {
 	vector<canh> MST;
 	int d = 0;
-	used[u] = true; //dua dinh u vao tap MST
+	used[u] = true;
 	while(MST.size() < n - 1) {
 		int min_w = INT_MAX;
 		int X, Y;
